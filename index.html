@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e8ecf5">
+  <meta name="description" content="CalcX — a calculator, scientific workspace, unit converter, and practical everyday calculation tools.">
+  <title>CalcX | Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <button class="drawer-backdrop" id="drawerBackdrop" aria-label="Close navigation" tabindex="-1"></button>
+  <nav class="nav-list" id="sidebar" aria-label="Main navigation" aria-hidden="true">
+    <div class="drawer-heading">
+      <span>MENU</span>
+      <button class="drawer-close" id="drawerClose" aria-label="Close navigation">×</button>
+    </div>
+    <button class="nav-item active" data-view="calculator"><span class="nav-index">01</span> Calculate</button>
+    <button class="nav-item" data-view="converter"><span class="nav-index">02</span> Convert</button>
+    <button class="nav-item" data-view="tools"><span class="nav-index">03</span> Utilities</button>
+    <button class="nav-item" data-view="electronic"><span class="nav-index">04</span> Electronic</button>
+    <button class="nav-item" data-view="currency"><span class="nav-index">05</span> Currency</button>
+    <button class="nav-item" data-view="history"><span class="nav-index">06</span> History</button>
+  </nav>
+
+  <main class="main">
+    <div class="page-heading">
+      <div>
+        <h1 id="pageTitle">CalcX</h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">◐</button>
+        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <section class="view active" id="view-calculator">
+      <div class="workspace-grid">
+        <section class="calc-card panel">
+          <div class="calc-topline">
+            <div class="calc-label"><span class="live-dot"></span> LIVE CALCULATOR <span class="calc-label-sep">/</span> <span id="memoryIndicator"></span></div>
+            <div class="mode-switch" role="group" aria-label="Calculator mode">
+              <button class="mode-btn selected" data-mode="basic">Standard</button>
+              <button class="mode-btn" data-mode="scientific">Scientific</button>
+              <button class="mode-btn" data-mode="engineering">Engineering</button>
+            </div>
+          </div>
+
+          <div class="calculator-layout">
+            <div class="calc-workspace">
+              <div class="display-wrap">
+                <div class="display-meta"><span>EXPRESSION</span><button class="display-chip" id="angleToggle" title="Switch degrees and radians">DEG</button></div>
+                <label class="sr-only" for="expression">Enter expression</label>
+                <input id="expression" class="expression" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0" aria-label="Expression input">
+                <div class="result-row"><span class="result-caption">= RESULT</span><output id="result" aria-live="polite">0</output></div>
+              </div>
+
+              <div class="keypad" id="keypad">
+                <button class="key utility" data-action="clear">AC</button><button class="key utility" data-action="sign">+/−</button><button class="key utility" data-value="%">%</button><button class="key operator" data-value="÷">÷</button>
+                <button class="key" data-value="7">7</button><button class="key" data-value="8">8</button><button class="key" data-value="9">9</button><button class="key operator" data-value="×">×</button>
+                <button class="key" data-value="4">4</button><button class="key" data-value="5">5</button><button class="key" data-value="6">6</button><button class="key operator" data-value="−">−</button>
+                <button class="key" data-value="1">1</button><button class="key" data-value="2">2</button><button class="key" data-value="3">3</button><button class="key operator" data-value="+">+</button>
+                <button class="key utility" data-action="backspace">⌫</button><button class="key" data-value="0">0</button><button class="key" data-value=".">.</button><button class="key equals" data-action="equals">=</button>
+              </div>
+              <div class="calc-footer"><span>⌘ Paste or type an expression</span><span>ENTER to solve <b>·</b> ESC to clear</span></div>
+            </div>
+
+            <aside class="function-rail">
+              <div class="rail-heading"><span>FUNCTIONS</span><span class="rail-count">01—18</span></div>
+              <div class="advanced-keys hidden" id="scientificKeys">
+                <button class="key sci" data-value="sin(">sin</button><button class="key sci" data-value="cos(">cos</button><button class="key sci" data-value="tan(">tan</button><button class="key sci" data-value="sqrt(">√x</button><button class="key sci" data-value="^2">x²</button><button class="key sci" data-value="^">xʸ</button>
+                <button class="key sci" data-value="asin(">sin⁻¹</button><button class="key sci" data-value="acos(">cos⁻¹</button><button class="key sci" data-value="atan(">tan⁻¹</button><button class="key sci" data-value="log(">log</button><button class="key sci" data-value="ln(">ln</button><button class="key sci" data-value="π">π</button>
+                <button class="key sci" data-value="(">(</button><button class="key sci" data-value=")">)</button><button class="key sci" data-value="!">n!</button><button class="key sci" data-value="abs(">abs</button><button class="key sci" data-value="exp(">eˣ</button><button class="key sci" data-value="Ans">Ans</button>
+              </div>
+              <div class="advanced-keys hidden" id="engineeringKeys">
+                <button class="key sci" data-value="sinh(">sinh</button><button class="key sci" data-value="cosh(">cosh</button><button class="key sci" data-value="tanh(">tanh</button><button class="key sci" data-value="asinh(">asinh</button><button class="key sci" data-value="acosh(">acosh</button><button class="key sci" data-value="atanh(">atanh</button>
+                <button class="key sci" data-value="cbrt(">∛x</button><button class="key sci" data-value="log2(">log₂</button><button class="key sci" data-value="10^">10ˣ</button><button class="key sci" data-value="^3">x³</button><button class="key sci" data-value="1/">1/x</button><button class="key sci" data-value="mod(">mod</button>
+                <button class="key sci" data-value="pi">π</button><button class="key sci" data-value="e">e</button><button class="key sci" data-value="phi">φ</button><button class="key sci" data-value="c0">c₀</button><button class="key sci" data-value="g0">g</button><button class="key sci" data-value="Rgas">R</button>
+                <button class="key sci" data-value="kB">kB</button><button class="key sci" data-value="NA">Nₐ</button><button class="key sci" data-value="hPlanck">h</button><button class="key sci" data-value="Gconst">G</button><button class="key sci" data-value="mu0">μ₀</button><button class="key sci" data-value="eps0">ε₀</button>
+              </div>
+              <div class="function-empty" id="functionEmpty"><div class="empty-symbol">∑</div><strong>Keep it simple.</strong><p>Switch to Scientific or Engineering to reveal advanced functions.</p></div>
+              <div class="engineering-bar hidden" id="engineeringBar">
+                <div class="notation-row"><span>Engineering notation</span><button class="display-chip" id="notationToggle">OFF</button></div>
+                <span class="prefix-label">SI PREFIXES</span>
+                <div class="prefix-actions"><button data-value="*1e3">k · 10³</button><button data-value="*1e6">M · 10⁶</button><button data-value="*1e-3">m · 10⁻³</button><button data-value="*1e-6">μ · 10⁻⁶</button></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <aside class="right-column">
+          <section class="panel history-panel">
+            <div class="panel-head compact"><div><span class="section-kicker">YOUR SESSION</span><h3>Recent results</h3></div><button class="text-btn" id="clearHistory">Clear</button></div>
+            <div id="recentHistory" class="history-list"><div class="empty-state"><span>↳</span><p>Your calculations will appear here.</p></div></div>
+            <button class="subtle-link" data-goto="history">Open full history <span>↗</span></button>
+          </section>
+          <section class="memory-panel panel">
+            <div class="panel-head compact"><div><span class="section-kicker">STORED VALUE</span><h3>Memory</h3></div><span class="memory-dot"></span></div>
+            <div class="memory-actions"><button data-action="mc">MC</button><button data-action="mr">MR</button><button data-action="mplus">M+</button><button data-action="mminus">M−</button><button data-action="ms">MS</button></div>
+          </section>
+          <section class="side-note"><span class="note-number">TIP / 01</span><p>Use the expression field like a scratchpad. Paste a full equation, edit it, then press <b>Enter</b>.</p></section>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-converter">
+      <div class="panel converter-panel">
+        <div class="converter-top"><label class="field-label" for="category">SELECT A CATEGORY</label><select id="category"></select></div>
+        <div class="conversion-grid">
+          <div class="convert-field"><label class="field-label" for="fromValue">YOU HAVE</label><input id="fromValue" type="number" value="1" step="any"><select id="fromUnit"></select></div>
+          <button class="swap-btn" id="swapUnits" aria-label="Swap units">⇄</button>
+          <div class="convert-field"><label class="field-label" for="toValue">YOU GET</label><output id="toValue" class="convert-output">0.3048</output><select id="toUnit"></select></div>
+        </div>
+        <div class="conversion-foot"><span id="conversionFormula">1 meter = 3.28084 feet</span><button class="text-btn" id="copyConversion">Copy result ↗</button></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-tools">
+      <div class="calculator-browser">
+        <div class="calculator-browser-toolbar">
+          <div class="calculator-category-filters" role="group" aria-label="Filter calculators">
+            <button class="calculator-category-filter active" type="button" data-tool-category="all" aria-pressed="true">All <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="mortgage-real-estate" aria-pressed="false">Mortgage &amp; Real Estate <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="investment" aria-pressed="false">Investment <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="tax-salary" aria-pressed="false">Tax &amp; Salary <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="loans-debt" aria-pressed="false">Loans &amp; Debt <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="business-budget" aria-pressed="false">Business &amp; Budget <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="finance" aria-pressed="false">Finance <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="fitness" aria-pressed="false">Fitness <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="pregnancy" aria-pressed="false">Pregnancy <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="health" aria-pressed="false">Health <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="weather" aria-pressed="false">Weather <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="statistics" aria-pressed="false">Statistics <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="geometry" aria-pressed="false">Geometry <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="math" aria-pressed="false">Math <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="education" aria-pressed="false">Education <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="date-time" aria-pressed="false">Date &amp; Time <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="housing" aria-pressed="false">Housing <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="measuring-units" aria-pressed="false">Measuring Units <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="electronics-circuits" aria-pressed="false">Electronics / Circuits <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="internet" aria-pressed="false">Internet <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="transportation" aria-pressed="false">Transportation <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="entertainment" aria-pressed="false">Entertainment <span data-category-count></span></button>
+            <button class="calculator-category-filter" type="button" data-tool-category="other" aria-pressed="false">Other <span data-category-count></span></button>
+          </div>
+          <label class="calculator-search">
+            <span class="sr-only">Search calculators</span>
+            <input id="toolSearch" type="search" placeholder="Search calculators">
+            <span aria-hidden="true">⌕</span>
+          </label>
+        </div>
+        <div class="calculator-directory" id="toolDirectory" aria-label="Calculator directory"></div>
+        <p class="tool-no-results" id="toolNoResults" hidden>No calculators found. Try another search.</p>
+      </div>
+      <div class="tool-grid">
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">%</div><div><h3>Percentage Calculator</h3><p>Find a percentage of a value.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Percentage (%)</span><input id="pct" type="number" step="any"></label><label class="field-control"><span>Of value</span><input id="pctBase" type="number" step="any"></label></div><div class="tool-output"><span>Calculated value</span><output id="pctResult">—</output></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">◷</div><div><h3>Age calculator</h3><p>Calculate your age from your date of birth.</p></div></div><div class="tool-fields"><label class="field-control"><span>Date of birth</span><input id="birthDate" type="date"></label></div><div class="tool-output"><span>Your age</span><output id="ageResult">—</output><small id="ageNextBirthday">Enter your date of birth</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↔</div><div><h3>Age gap</h3><p>Compare the ages of two people.</p></div></div><div class="tool-fields"><label class="field-control"><span>Person 1 date of birth</span><input id="birthDateOne" type="date"></label><label class="field-control"><span>Person 2 date of birth</span><input id="birthDateTwo" type="date"></label></div><div class="tool-output"><span>Age difference</span><output id="ageGapResult">—</output><small id="ageGapNote">Enter both dates of birth</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↗</div><div><h3>Discount</h3><p>Calculate sale price and savings.</p></div></div><div class="tool-fields"><label class="field-control"><span>Original price (₹)</span><input id="price" type="number" min="0" step="any"></label><label class="field-control"><span>Discount (%)</span><input id="discount" type="number" min="0" max="100" step="any"></label></div><div class="tool-output"><span>Price after discount</span><output id="discountResult">—</output><small id="discountSaving">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">∑</div><div><h3>Mean, Median, Mode, Range Calculator</h3><p>Find common statistics from a list.</p></div></div><div class="tool-fields"><label class="field-control"><span>Numbers (comma separated)</span><input id="averageInput" type="text" placeholder="Enter numbers separated by commas"></label></div><div class="tool-stats"><div><span>Mean</span><output id="averageResult">—</output></div><div><span>Median</span><output id="medianResult">—</output></div><div><span>Mode</span><output id="modeResult">—</output></div><div><span>Range</span><output id="rangeResult">—</output></div></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">÷</div><div><h3>Tip split</h3><p>Split a bill evenly, including tip.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Bill amount (₹)</span><input id="bill" type="number" min="0" step="any"></label><label class="field-control"><span>Tip (%)</span><input id="tip" type="number" min="0" step="any"></label><label class="field-control"><span>People</span><input id="people" type="number" min="1" step="1"></label></div><div class="tool-output"><span>Each person pays</span><output id="tipResult">—</output><small id="tipTotal">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↗</div><div><h3>Compound interest</h3><p>Estimate investment growth over time.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Principal (₹)</span><input id="principal" type="number" min="0" step="any"></label><label class="field-control"><span>Annual rate (%)</span><input id="rate" type="number" step="any"></label><label class="field-control"><span>Years</span><input id="years" type="number" min="0" step="any"></label><label class="field-control"><span>Compounds / year</span><select id="compoundFreq"><option value="1">Annually</option><option value="2">Semi-annually</option><option value="4">Quarterly</option><option value="12" selected>Monthly</option><option value="365">Daily</option></select></label></div><div class="tool-output"><span>Future value</span><output id="compoundResult">—</output><small id="compoundGain">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">:</div><div><h3>Ratio Calculator</h3><p>Reduce a ratio to its simplest form.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Value A</span><input id="ratioA" type="number" step="1"></label><label class="field-control"><span>Value B</span><input id="ratioB" type="number" step="1"></label></div><div class="tool-output"><span>Simplified ratio</span><output id="ratioResult">—</output></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">₹</div><div><h3>GST calculator</h3><p>Add or remove tax from a base amount.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Amount (₹)</span><input id="gstAmount" type="number" min="0" step="any"></label><label class="field-control"><span>GST rate (%)</span><select id="gstRate"><option>3</option><option>5</option><option selected>12</option><option>18</option><option>28</option></select></label></div><div class="tool-output"><span>Total including GST</span><output id="gstResult">—</output><small id="gstBreakdown">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">▤</div><div><h3>Loan EMI</h3><p>Estimate a fixed monthly loan payment.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Loan amount (₹)</span><input id="loanAmount" type="number" min="0" step="any"></label><label class="field-control"><span>Interest / year (%)</span><input id="loanRate" type="number" min="0" step="any"></label><label class="field-control"><span>Tenure (years)</span><input id="loanYears" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Monthly EMI</span><output id="emiResult">—</output><small id="emiTotal">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">±</div><div><h3>Percentage change</h3><p>Compare an old value with a new one.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Starting value</span><input id="changeStart" type="number" step="any"></label><label class="field-control"><span>New value</span><input id="changeEnd" type="number" step="any"></label></div><div class="tool-output"><span>Percentage change</span><output id="changeResult">—</output><small id="changeAmount">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">∑</div><div><h3>Simple interest</h3><p>Calculate interest without compounding.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Principal (₹)</span><input id="simplePrincipal" type="number" min="0" step="any"></label><label class="field-control"><span>Annual rate (%)</span><input id="simpleRate" type="number" min="0" step="any"></label><label class="field-control"><span>Time (years)</span><input id="simpleYears" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Total amount</span><output id="simpleResult">—</output><small id="simpleInterest">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">⛽︎</div><div><h3>Fuel cost</h3><p>Estimate fuel needed and trip cost.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Distance (km)</span><input id="fuelDistance" type="number" min="0" step="any"></label><label class="field-control"><span>Efficiency (km/L)</span><input id="fuelEfficiency" type="number" min="0" step="any"></label><label class="field-control"><span>Fuel price (₹/L)</span><input id="fuelPrice" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Estimated trip cost</span><output id="fuelResult">—</output><small id="fuelNeeded">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↗</div><div><h3>Profit margin & markup</h3><p>Compare selling price with cost.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Cost price (₹)</span><input id="costPrice" type="number" min="0" step="any"></label><label class="field-control"><span>Selling price (₹)</span><input id="sellingPrice" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Profit or loss</span><output id="profitResult">—</output><small id="marginDetails">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">÷</div><div><h3>Greatest Common Factor Calculator</h3><p>Find the greatest common factor of two whole numbers.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Whole number A</span><input id="hcfA" type="number" step="1"></label><label class="field-control"><span>Whole number B</span><input id="hcfB" type="number" step="1"></label></div><div class="tool-output"><span>Greatest common factor</span><output id="hcfResult">—</output><small id="lcmResult">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">◉</div><div><h3>BMI calculator</h3><p>Estimate body mass index for adults.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Weight (kg)</span><input id="bmiWeight" type="number" min="0" step="any"></label><label class="field-control"><span>Height (cm)</span><input id="bmiHeight" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Body mass index</span><output id="bmiResult">—</output><small id="bmiNote">General adult reference only; not a diagnosis.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">₹</div><div><h3>Savings goal</h3><p>Estimate time to reach a savings target.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Target (₹)</span><input id="savingsTarget" type="number" min="0" step="any"></label><label class="field-control"><span>Already saved (₹)</span><input id="savingsCurrent" type="number" min="0" step="any"></label><label class="field-control"><span>Saving per month (₹)</span><input id="savingsMonthly" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Estimated time</span><output id="savingsResult">—</output><small id="savingsNote">Excludes interest and investment returns.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">₹</div><div><h3>Unit price comparison</h3><p>Compare the cost per unit of two items.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Item A price (₹)</span><input id="unitPriceA" type="number" min="0" step="any"></label><label class="field-control"><span>Item A quantity</span><input id="unitQuantityA" type="number" min="0" step="any"></label><label class="field-control"><span>Item B price (₹)</span><input id="unitPriceB" type="number" min="0" step="any"></label><label class="field-control"><span>Item B quantity</span><input id="unitQuantityB" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Better value</span><output id="unitPriceResult">—</output><small id="unitPriceNote">Enter quantities in the same unit.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">▦</div><div><h3>Fraction Calculator</h3><p>Simplify fractions or perform arithmetic on them.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Numerator A</span><input id="fractionNumerator" type="number" step="1"></label><label class="field-control"><span>Denominator A</span><input id="fractionDenominator" type="number" step="1"></label><label class="field-control"><span>Operation</span><select id="fractionOperation"><option value="simplify">Simplify A</option><option value="add">Add</option><option value="subtract">Subtract</option><option value="multiply">Multiply</option><option value="divide">Divide</option></select></label><label class="field-control fraction-second"><span>Numerator B</span><input id="fractionNumeratorB" type="number" step="1"></label><label class="field-control fraction-second"><span>Denominator B</span><input id="fractionDenominatorB" type="number" step="1"></label></div><div class="tool-output"><span>Result</span><output id="fractionResult">—</output><small id="fractionNote">Enter whole numbers; denominators cannot be zero.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">√</div><div><h3>Prime number checker</h3><p>Check whether a whole number is prime.</p></div></div><div class="tool-fields"><label class="field-control"><span>Whole number (2 to 1 billion)</span><input id="primeNumber" type="number" min="2" max="1000000000" step="1"></label></div><div class="tool-output"><span>Result</span><output id="primeResult">—</output><small id="primeNote">Enter a whole number.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">□</div><div><h3>Area Calculator</h3><p>Calculate basic shape measurements.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Shape</span><select id="geometryShape"><option value="rectangle">Rectangle</option><option value="square">Square</option><option value="circle">Circle</option></select></label><label class="field-control"><span id="geometryLengthLabel">Length (units)</span><input id="geometryLength" type="number" min="0" step="any"></label><label class="field-control" id="geometryWidthField"><span>Width (units)</span><input id="geometryWidth" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Area</span><output id="geometryArea">—</output><small id="geometryPerimeter">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↗</div><div><h3>Date calculator</h3><p>Add or subtract days from a date.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Starting date</span><input id="dateCalcStart" type="date"></label><label class="field-control"><span>Days to add or subtract</span><input id="dateCalcOffset" type="number" step="1"></label></div><div class="tool-output"><span>Resulting date</span><output id="dateCalcResult">—</output><small id="dateCalcNote">Use a negative number to go back.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">◷</div><div><h3>Time duration</h3><p>Find time between two clock times.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Start time</span><input id="timeStart" type="time"></label><label class="field-control"><span>End time</span><input id="timeEnd" type="time"></label></div><div class="tool-output"><span>Duration</span><output id="timeDurationResult">—</output><small id="timeDurationNote">Overnight durations are supported.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">₹</div><div><h3>SIP return calculator</h3><p>Estimate returns from monthly investing.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Monthly investment (₹)</span><input id="sipMonthly" type="number" min="0" step="any"></label><label class="field-control"><span>Expected return / year (%)</span><input id="sipRate" type="number" min="0" step="any"></label><label class="field-control"><span>Investment period (years)</span><input id="sipYears" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Estimated future value</span><output id="sipResult">—</output><small id="sipInvested">Excludes taxes and fees.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↗</div><div><h3>Break-even point</h3><p>Find how many units cover your costs.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Fixed costs (₹)</span><input id="breakEvenFixed" type="number" min="0" step="any"></label><label class="field-control"><span>Price per unit (₹)</span><input id="breakEvenPrice" type="number" min="0" step="any"></label><label class="field-control"><span>Variable cost per unit (₹)</span><input id="breakEvenVariable" type="number" min="0" step="any"></label></div><div class="tool-output"><span>Units to break even</span><output id="breakEvenResult">—</output><small id="breakEvenRevenue">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">◉</div><div><h3>BMR calculator</h3><p>Estimate daily resting energy use.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Age (years)</span><input id="bmrAge" type="number" min="1" step="1"></label><label class="field-control"><span>Weight (kg)</span><input id="bmrWeight" type="number" min="0" step="any"></label><label class="field-control"><span>Height (cm)</span><input id="bmrHeight" type="number" min="0" step="any"></label><label class="field-control"><span>Sex used by formula</span><select id="bmrSex"><option value="female">Female</option><option value="male">Male</option></select></label></div><div class="tool-output"><span>Estimated BMR</span><output id="bmrResult">—</output><small id="bmrNote">Formula-based estimate; individual needs vary.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">◷</div><div><h3>Running pace</h3><p>Calculate pace and speed from a run.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Distance (km)</span><input id="paceDistance" type="number" min="0" step="any"></label><label class="field-control"><span>Time (hours)</span><input id="paceHours" type="number" min="0" step="1"></label><label class="field-control"><span>Time (minutes)</span><input id="paceMinutes" type="number" min="0" max="59" step="1"></label></div><div class="tool-output"><span>Average pace</span><output id="paceResult">—</output><small id="paceSpeed">—</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">x²</div><div><h3>Quadratic Formula Calculator</h3><p>Solve an equation in the form ax² + bx + c = 0.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Coefficient a</span><input id="quadraticA" type="number" step="any"></label><label class="field-control"><span>Coefficient b</span><input id="quadraticB" type="number" step="any"></label><label class="field-control"><span>Coefficient c</span><input id="quadraticC" type="number" step="any"></label></div><div class="tool-output"><span>Solution</span><output id="quadraticResult">—</output><small id="quadraticNote">Enter all three coefficients.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">!</div><div><h3>Factorial calculator</h3><p>Calculate n! for whole numbers from 0 to 18.</p></div></div><div class="tool-fields"><label class="field-control"><span>Whole number (0–18)</span><input id="factorialNumber" type="number" min="0" max="18" step="1"></label></div><div class="tool-output"><span>Factorial</span><output id="factorialResult">—</output><small id="factorialNote">Enter a whole number from 0 to 18.</small></div></article>
+        <article class="panel tool-card"><div class="tool-card-head"><div class="tool-symbol">↔</div><div><h3>Date difference</h3><p>Count the days between two dates.</p></div></div><div class="tool-fields two-fields"><label class="field-control"><span>Start date</span><input id="dateDiffStart" type="date"></label><label class="field-control"><span>End date</span><input id="dateDiffEnd" type="date"></label></div><div class="tool-output"><span>Days between dates</span><output id="dateDiffResult">—</output><small id="dateDiffNote">The start date is not counted.</small></div></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-electronic">
+      <div class="boolean-tool-grid">
+        <article class="panel boolean-card">
+          <div class="tool-card-head"><div class="tool-symbol">∧</div><div><h3>Boolean Logic</h3><p>Evaluate a logic operation on 0 or 1.</p></div></div>
+          <div class="tool-fields boolean-algebra-fields">
+            <label class="field-control"><span>Operation</span><select id="booleanAlgebraOperation"><option>AND</option><option>OR</option><option>NOT</option><option>XOR</option><option>XNOR</option><option>NAND</option><option>NOR</option></select></label>
+            <label class="field-control"><span>Input A</span><select id="booleanAlgebraA"><option value="0">0</option><option value="1">1</option></select></label>
+            <label class="field-control" id="booleanAlgebraBField"><span>Input B</span><select id="booleanAlgebraB"><option value="0">0</option><option value="1">1</option></select></label>
+          </div>
+          <div class="tool-output"><span>Result</span><output id="booleanAlgebraResult" aria-live="polite">0</output><small id="booleanAlgebraNote">A AND B</small></div>
+        </article>
+
+        <article class="panel boolean-card boolean-gates-card">
+          <div class="tool-card-head"><div class="tool-symbol">⊙</div><div><h3>Logic Gates</h3><p>Compare the output of each gate for the selected inputs.</p></div></div>
+          <div class="tool-fields two-fields">
+            <label class="field-control"><span>Input A</span><select id="logicGateA"><option value="0">0</option><option value="1">1</option></select></label>
+            <label class="field-control"><span>Input B</span><select id="logicGateB"><option value="0">0</option><option value="1">1</option></select></label>
+          </div>
+          <div class="boolean-table-wrap"><table class="boolean-table"><thead><tr><th>Gate</th><th>Output</th></tr></thead><tbody id="logicGateRows"></tbody></table></div>
+        </article>
+
+        <article class="panel boolean-card boolean-card-wide">
+          <div class="tool-card-head"><div class="tool-symbol">▤</div><div><h3>Truth Tables</h3><p>View a gate's single-bit truth table and evaluate integer operands at a selected width.</p></div></div>
+          <div class="tool-fields boolean-truth-fields">
+            <label class="field-control"><span>Gate</span><select id="truthGate"><option>AND</option><option>OR</option><option>NOT</option><option>XOR</option><option>XNOR</option><option>NAND</option><option>NOR</option></select></label>
+            <label class="field-control"><span>Interpret as</span><select id="truthSignedness"><option value="unsigned">Unsigned</option><option value="signed">Signed (two's complement)</option></select></label>
+            <label class="field-control"><span>Bit width</span><select id="truthBitWidth"><option value="64">64 bits</option><option value="32">32 bits</option><option value="16">16 bits</option><option value="8" selected>8 bits</option></select></label>
+            <label class="field-control"><span>Integer input A</span><input id="truthOperandA" type="text" inputmode="numeric" autocomplete="off"></label>
+            <label class="field-control" id="truthOperandBField"><span>Integer input B</span><input id="truthOperandB" type="text" inputmode="numeric" autocomplete="off"></label>
+          </div>
+          <div class="tool-output"><span>Bitwise result</span><output id="truthWordResult" aria-live="polite">—</output><small id="truthWordNote">Enter integer operands to calculate.</small></div>
+          <div class="boolean-table-wrap"><table class="boolean-table"><thead id="truthTableHead"></thead><tbody id="truthTableRows"></tbody></table></div>
+          <small class="boolean-hint">The table shows one-bit logic. Signedness and width apply to the integer result.</small>
+        </article>
+
+        <article class="panel boolean-card boolean-card-wide">
+          <div class="tool-card-head"><div class="tool-symbol">⌗</div><div><h3>K-map</h3><p>Plot minterms and get a minimized sum-of-products expression.</p></div></div>
+          <div class="tool-fields boolean-kmap-fields">
+            <label class="field-control"><span>Variables</span><select id="kmapVariables"><option value="2">2 variables</option><option value="3">3 variables</option><option value="4" selected>4 variables</option></select></label>
+            <label class="field-control"><span>ON minterms (comma-separated)</span><input id="kmapMinterms" type="text" inputmode="numeric" autocomplete="off"></label>
+            <label class="field-control"><span>Don't-care terms (optional)</span><input id="kmapDontCares" type="text" inputmode="numeric" autocomplete="off"></label>
+          </div>
+          <div class="tool-output"><span>Minimized expression</span><output id="kmapExpression" aria-live="polite">—</output><small id="kmapNote">Enter the minterms where the function is 1.</small></div>
+          <div class="boolean-table-wrap" id="kmapTableWrap" hidden><table class="boolean-table kmap-table" id="kmapTable"></table></div>
+        </article>
+
+        <article class="panel boolean-card boolean-card-wide">
+          <div class="tool-card-head"><div class="tool-symbol">▦</div><div><h3>Flip Flops</h3><p>Explore the next-state table for SR, D, JK, and T flip-flops.</p></div></div>
+          <div class="tool-fields"><label class="field-control"><span>Flip-flop type</span><select id="flipFlopType"><option value="SR">SR</option><option value="D">D</option><option value="JK">JK</option><option value="T">T</option></select></label></div>
+          <div class="boolean-table-wrap"><table class="boolean-table"><thead id="flipFlopTableHead"></thead><tbody id="flipFlopTableRows"></tbody></table></div>
+          <small class="boolean-hint" id="flipFlopNote"></small>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-currency">
+      <div class="panel converter-panel currency-panel">
+        <div class="conversion-grid">
+          <div class="convert-field">
+            <label class="field-label" for="currencyAmount">YOU HAVE</label>
+            <input id="currencyAmount" type="number" min="0" step="any">
+            <select id="currencyFrom" aria-label="Convert from">
+              <option value="" selected>Choose currency</option>
+            </select>
+          </div>
+          <button class="swap-btn" id="currencySwap" type="button" aria-label="Swap currencies">⇄</button>
+          <div class="convert-field">
+            <label class="field-label" for="currencyResult">YOU GET</label>
+            <output id="currencyResult" class="convert-output currency-result" aria-live="polite">—</output>
+            <select id="currencyTo" aria-label="Convert to">
+              <option value="" selected>Choose currency</option>
+            </select>
+          </div>
+        </div>
+        <div class="conversion-foot">
+          <span id="currencyRate" aria-live="polite">Choose currencies to see the rate.</span>
+          <button class="outline-btn" id="refreshCurrencyRates" type="button">Refresh rates ↻</button>
+        </div>
+        <p class="currency-status" id="currencyStatus" role="status" aria-live="polite">Rates load when you open this page.</p>
+        <p class="currency-attribution">Rates from <a href="https://fxratesapi.com/" target="_blank" rel="noopener">FXRatesAPI</a>. Data may be delayed from live market quotes.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-history">
+      <div class="history-toolbar">
+        <button class="outline-btn" id="clearHistoryFull">Clear history</button>
+      </div>
+      <section class="panel full-history" id="fullHistory"><div class="empty-state"><span>↳</span><p>No calculations yet.</p></div></section>
+    </section>
+
+    <footer class="site-footer">
+      <p>© 2026 CalcX. All rights reserved.<br>Developed by <a href="https://sidhaaarth24.github.io/sidsphere/" target="_blank" rel="noopener"><strong>Sidharth Kumar</strong></a></p>
+    </footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
